@@ -28,22 +28,40 @@
     </div>
 
     <script>
-        // Objeto para simular uma conta bancária
-        let contaBancaria = {
-            numeroConta: "132404",
-            // Aqui a senha é armazenada como hash (não recomendado no lado do cliente, apenas para fins de exemplo)
-            senhaHash: "1ecea36b394966a5d2d8f04ff91d152f", // hash da senha "1327"
-            saldo: 1000,
-            extrato: []
-        };
+        // Array de contas bancárias
+        let contasBancarias = [
+            {
+                numeroConta: "132404",
+                // Aqui a senha é armazenada como hash (não recomendado no lado do cliente, apenas para fins de exemplo)
+                senhaHash: "1ecea36b394966a5d2d8f04ff91d152f", // hash da senha "1327"
+                saldo: 1000,
+                extrato: []
+            },
+            {
+                numeroConta: "2709",
+                senhaHash: "a64d4a8316cd0322ae87733c2d5e94e2", // hash da senha "5511"
+                saldo: 2000,
+                extrato: []
+            },
+            {
+                numeroConta: "1309",
+                senhaHash: "f2e96d14f520fd0e84a4c725e4e0f067", // hash da senha "2424"
+                saldo: 500,
+                extrato: []
+            }
+        ];
 
         let tentativasLogin = 3;
+        let contaLogada = null;
 
         function login() {
             let numeroConta = document.getElementById("conta").value;
             let senha = document.getElementById("senha").value;
-            // Verifica se a senha corresponde ao hash armazenado (em uma aplicação real, essa verificação ocorreria no servidor)
-            if (numeroConta === contaBancaria.numeroConta && md5(senha) === contaBancaria.senhaHash) {
+            
+            // Busca pela conta no array de contas bancárias
+            contaLogada = contasBancarias.find(conta => conta.numeroConta === numeroConta && md5(senha) === conta.senhaHash);
+            
+            if (contaLogada) {
                 document.getElementById("login").style.display = "none";
                 document.getElementById("operacoes").style.display = "block";
                 // Reinicia o contador de tentativas de login
@@ -70,17 +88,19 @@
             document.getElementById("senha").value = "";
             document.getElementById("valor_deposito").value = "";
             document.getElementById("valor_saque").value = "";
+            // Limpar a variável de conta logada
+            contaLogada = null;
         }
 
         function verificarSaldo() {
-            alert("Seu saldo é de R$" + contaBancaria.saldo.toFixed(2));
+            alert("Seu saldo é de R$" + contaLogada.saldo.toFixed(2));
         }
 
         function realizarDeposito() {
             let valor = parseFloat(document.getElementById("valor_deposito").value);
             if (!isNaN(valor) && valor > 0) {
-                contaBancaria.saldo += valor;
-                contaBancaria.extrato.push("Depósito de R$" + valor.toFixed(2));
+                contaLogada.saldo += valor;
+                contaLogada.extrato.push("Depósito de R$" + valor.toFixed(2));
                 alert("Depósito realizado com sucesso.");
             } else {
                 alert("Por favor, insira um valor válido para o depósito.");
@@ -89,9 +109,9 @@
 
         function realizarSaque() {
             let valor = parseFloat(document.getElementById("valor_saque").value);
-            if (!isNaN(valor) && valor > 0 && valor <= contaBancaria.saldo) {
-                contaBancaria.saldo -= valor;
-                contaBancaria.extrato.push("Saque de R$" + valor.toFixed(2));
+            if (!isNaN(valor) && valor > 0 && valor <= contaLogada.saldo) {
+                contaLogada.saldo -= valor;
+                contaLogada.extrato.push("Saque de R$" + valor.toFixed(2));
                 alert("Saque realizado com sucesso.");
             } else {
                 alert("Valor de saque inválido ou saldo insuficiente.");
@@ -100,7 +120,7 @@
 
         function mostrarExtrato() {
             let extrato = "Extrato:\n";
-            contaBancaria.extrato.forEach(transacao => {
+            contaLogada.extrato.forEach(transacao => {
                 extrato += transacao + "\n";
             });
             alert(extrato);
