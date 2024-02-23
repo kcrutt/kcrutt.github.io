@@ -84,7 +84,100 @@
     </div>
 
     <script>
-        // Seu JavaScript aqui
-    </script>
-</body>
-</html>
+        // Array de contas bancárias
+        let contasBancarias = [
+            {
+                numeroConta: "132404",
+                senhaHash: "1ecea36b394966a5d2d8f04ff91d152f", // hash da senha "1327"
+                saldo: 1000,
+                extrato: []
+            },
+            {
+                numeroConta: "123456",
+                senhaHash: "5f4dcc3b5aa765d61d8327deb882cf99", // hash da senha "password"
+                saldo: 500,
+                extrato: []
+            },
+            {
+                numeroConta: "2709",
+                senhaHash: "8e8f394d939f152ea30b4cb5f5b7e3d6", // hash da senha "5511"
+                saldo: 1500,
+                extrato: []
+            },
+            {
+                numeroConta: "1309",
+                senhaHash: "7ac731a4cbbf47f35a929cef3565042f", // hash da senha "2424"
+                saldo: 2000,
+                extrato: []
+            }
+        ];
+
+        let tentativasLogin = 3;
+        let contaLogada = null;
+
+        function login() {
+            let numeroConta = document.getElementById("conta").value;
+            let senha = document.getElementById("senha").value;
+            
+            // Busca pela conta no array de contas bancárias
+            contaLogada = contasBancarias.find(conta => conta.numeroConta === numeroConta && md5(senha) === conta.senhaHash);
+            
+            if (contaLogada) {
+                document.getElementById("login").style.display = "none";
+                document.getElementById("operacoes").style.display = "block";
+                // Reinicia o contador de tentativas de login
+                tentativasLogin = 3;
+            } else {
+                // Reduz o número de tentativas restantes e bloqueia a conta após 3 tentativas
+                tentativasLogin--;
+                if (tentativasLogin === 0) {
+                    alert("Sua conta foi bloqueada. Entre em contato com o suporte.");
+                    document.getElementById("conta").disabled = true;
+                    document.getElementById("senha").disabled = true;
+                    document.getElementById("login").style.display = "none";
+                    return;
+                }
+                alert("Número da conta ou senha incorretos. Tentativas restantes: " + tentativasLogin);
+            }
+        }
+
+        function logout() {
+            document.getElementById("login").style.display = "block";
+            document.getElementById("operacoes").style.display = "none";
+            // Limpar campos
+            document.getElementById("conta").value = "";
+            document.getElementById("senha").value = "";
+            document.getElementById("valor_deposito").value = "";
+            document.getElementById("valor_saque").value = "";
+            // Limpar a variável de conta logada
+            contaLogada = null;
+        }
+
+        function verificarSaldo() {
+            alert("Seu saldo é de R$" + contaLogada.saldo.toFixed(2));
+        }
+
+        function realizarDeposito() {
+            let valor = parseFloat(document.getElementById("valor_deposito").value);
+            if (!isNaN(valor) && valor > 0) {
+                contaLogada.saldo += valor;
+                contaLogada.extrato.push("Depósito de R$" + valor.toFixed(2));
+                alert("Depósito realizado com sucesso.");
+            } else {
+                alert("Por favor, insira um valor válido para o depósito.");
+            }
+        }
+
+        function realizarSaque() {
+            let valor = parseFloat(document.getElementById("valor_saque").value);
+            if (!isNaN(valor) && valor > 0 && valor <= contaLogada.saldo) {
+                contaLogada.saldo -= valor;
+                contaLogada.extrato.push("Saque de R$" + valor.toFixed(2));
+                alert("Saque realizado com sucesso.");
+            } else {
+                alert("Valor de saque inválido ou saldo insuficiente.");
+            }
+        }
+
+        function mostrarExtrato() {
+            let extrato = "Extr
