@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crutt Bank</title>
     <style>
-        /* Coloque seu CSS aqui */
+        /* Adicione seu CSS aqui */
     </style>
 </head>
 <body>
@@ -28,7 +28,88 @@
     </div>
 
     <script>
-        // Coloque seu JavaScript aqui
+        // Objeto para simular uma conta bancária
+        let contaBancaria = {
+            numeroConta: "123456",
+            // Aqui a senha é armazenada como hash (não recomendado no lado do cliente, apenas para fins de exemplo)
+            senhaHash: "5f4dcc3b5aa765d61d8327deb882cf99", // hash da senha "password"
+            saldo: 1000,
+            extrato: []
+        };
+
+        let tentativasLogin = 3;
+
+        function login() {
+            let numeroConta = document.getElementById("conta").value;
+            let senha = document.getElementById("senha").value;
+            // Verifica se a senha corresponde ao hash armazenado (em uma aplicação real, essa verificação ocorreria no servidor)
+            if (numeroConta === contaBancaria.numeroConta && md5(senha) === contaBancaria.senhaHash) {
+                document.getElementById("login").style.display = "none";
+                document.getElementById("operacoes").style.display = "block";
+                // Reinicia o contador de tentativas de login
+                tentativasLogin = 3;
+            } else {
+                // Reduz o número de tentativas restantes e bloqueia a conta após 3 tentativas
+                tentativasLogin--;
+                if (tentativasLogin === 0) {
+                    alert("Sua conta foi bloqueada. Entre em contato com o suporte.");
+                    document.getElementById("conta").disabled = true;
+                    document.getElementById("senha").disabled = true;
+                    document.getElementById("login").style.display = "none";
+                    return;
+                }
+                alert("Número da conta ou senha incorretos. Tentativas restantes: " + tentativasLogin);
+            }
+        }
+
+        function logout() {
+            document.getElementById("login").style.display = "block";
+            document.getElementById("operacoes").style.display = "none";
+            // Limpar campos
+            document.getElementById("conta").value = "";
+            document.getElementById("senha").value = "";
+            document.getElementById("valor_deposito").value = "";
+            document.getElementById("valor_saque").value = "";
+        }
+
+        function verificarSaldo() {
+            alert("Seu saldo é de R$" + contaBancaria.saldo.toFixed(2));
+        }
+
+        function realizarDeposito() {
+            let valor = parseFloat(document.getElementById("valor_deposito").value);
+            if (!isNaN(valor) && valor > 0) {
+                contaBancaria.saldo += valor;
+                contaBancaria.extrato.push("Depósito de R$" + valor.toFixed(2));
+                alert("Depósito realizado com sucesso.");
+            } else {
+                alert("Por favor, insira um valor válido para o depósito.");
+            }
+        }
+
+        function realizarSaque() {
+            let valor = parseFloat(document.getElementById("valor_saque").value);
+            if (!isNaN(valor) && valor > 0 && valor <= contaBancaria.saldo) {
+                contaBancaria.saldo -= valor;
+                contaBancaria.extrato.push("Saque de R$" + valor.toFixed(2));
+                alert("Saque realizado com sucesso.");
+            } else {
+                alert("Valor de saque inválido ou saldo insuficiente.");
+            }
+        }
+
+        function mostrarExtrato() {
+            let extrato = "Extrato:\n";
+            contaBancaria.extrato.forEach(transacao => {
+                extrato += transacao + "\n";
+            });
+            alert(extrato);
+        }
+
+        // Função de hash MD5 (para fins de exemplo, em uma aplicação real, você usaria uma implementação mais robusta)
+        function md5(str) {
+            return str; // Implementação simplificada, não recomendada para uso em produção
+        }
     </script>
 </body>
 </html>
