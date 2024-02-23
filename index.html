@@ -19,11 +19,13 @@
 
     <div id="operacoes" style="display:none;">
         <button onclick="verificarSaldo()">Verificar Saldo</button><br>
+        <button onclick="realizarTransferencia()">Transferência</button><br>
         <label for="valor_deposito">Valor a depositar:</label>
         <input type="text" id="valor_deposito"><button onclick="realizarDeposito()">Depósito</button><br>
         <label for="valor_saque">Valor a sacar:</label>
         <input type="text" id="valor_saque"><button onclick="realizarSaque()">Saque</button><br>
         <button onclick="mostrarExtrato()">Extrato</button><br>
+        <button onclick="alterarSenha()">Alterar Senha</button><br>
         <button onclick="logout()">Logout</button>
     </div>
 
@@ -32,21 +34,27 @@
         let contasBancarias = [
             {
                 numeroConta: "132404",
-                // Aqui a senha é armazenada como hash (não recomendado no lado do cliente, apenas para fins de exemplo)
-                senhaHash: "1327", // hash da senha "1327"
+                senhaHash: "1ecea36b394966a5d2d8f04ff91d152f", // hash da senha "1327"
                 saldo: 1000,
                 extrato: []
             },
             {
+                numeroConta: "123456",
+                senhaHash: "5f4dcc3b5aa765d61d8327deb882cf99", // hash da senha "password"
+                saldo: 500,
+                extrato: []
+            },
+            // Adicione mais contas bancárias conforme necessário
+            {
                 numeroConta: "2709",
-                senhaHash: "5511", // hash da senha "5511"
-                saldo: 2000,
+                senhaHash: "8e8f394d939f152ea30b4cb5f5b7e3d6", // hash da senha "5511"
+                saldo: 1500,
                 extrato: []
             },
             {
                 numeroConta: "1309",
-                senhaHash: "2424", // hash da senha "2424"
-                saldo: 500,
+                senhaHash: "7ac731a4cbbf47f35a929cef3565042f", // hash da senha "2424"
+                saldo: 2000,
                 extrato: []
             }
         ];
@@ -124,6 +132,32 @@
                 extrato += transacao + "\n";
             });
             alert(extrato);
+        }
+
+        function alterarSenha() {
+            let novaSenha = prompt("Digite a nova senha:");
+            if (novaSenha) {
+                // Atualiza a senha da conta logada (em uma aplicação real, você precisaria atualizar no banco de dados)
+                contaLogada.senhaHash = md5(novaSenha);
+                alert("Senha alterada com sucesso.");
+            }
+        }
+
+        function realizarTransferencia() {
+            let numeroContaDestino = prompt("Digite o número da conta de destino:");
+            let valorTransferencia = parseFloat(prompt("Digite o valor da transferência:"));
+            
+            let contaDestino = contasBancarias.find(conta => conta.numeroConta === numeroContaDestino);
+            
+            if (contaDestino && valorTransferencia > 0 && valorTransferencia <= contaLogada.saldo) {
+                contaLogada.saldo -= valorTransferencia;
+                contaDestino.saldo += valorTransferencia;
+                contaLogada.extrato.push("Transferência para conta " + numeroContaDestino + " no valor de R$" + valorTransferencia.toFixed(2));
+                contaDestino.extrato.push("Transferência recebida da conta " + contaLogada.numeroConta + " no valor de R$" + valorTransferencia.toFixed(2));
+                alert("Transferência realizada com sucesso.");
+            } else {
+                alert("Transferência inválida. Verifique o número da conta destino e o saldo disponível.");
+            }
         }
 
         // Função de hash MD5 (para fins de exemplo, em uma aplicação real, você usaria uma implementação mais robusta)
