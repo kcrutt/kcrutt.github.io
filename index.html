@@ -180,4 +180,43 @@
         }
 
         function mostrarExtrato() {
-            let extrato = "Extr
+            let extrato = "Extrato:\n";
+            contaLogada.extrato.forEach(transacao => {
+                extrato += transacao + "\n";
+            });
+            alert(extrato);
+        }
+
+        function alterarSenha() {
+            let novaSenha = prompt("Digite a nova senha:");
+            if (novaSenha) {
+                // Atualiza a senha da conta logada (em uma aplicação real, você precisaria atualizar no banco de dados)
+                contaLogada.senhaHash = md5(novaSenha);
+                alert("Senha alterada com sucesso.");
+            }
+        }
+
+        function realizarTransferencia() {
+            let numeroContaDestino = prompt("Digite o número da conta de destino:");
+            let valorTransferencia = parseFloat(prompt("Digite o valor da transferência:"));
+            
+            let contaDestino = contasBancarias.find(conta => conta.numeroConta === numeroContaDestino);
+            
+            if (contaDestino && valorTransferencia > 0 && valorTransferencia <= contaLogada.saldo) {
+                contaLogada.saldo -= valorTransferencia;
+                contaDestino.saldo += valorTransferencia;
+                contaLogada.extrato.push("Transferência para conta " + numeroContaDestino + " no valor de R$" + valorTransferencia.toFixed(2));
+                contaDestino.extrato.push("Transferência recebida da conta " + contaLogada.numeroConta + " no valor de R$" + valorTransferencia.toFixed(2));
+                alert("Transferência realizada com sucesso.");
+            } else {
+                alert("Transferência inválida. Verifique o número da conta destino e o saldo disponível.");
+            }
+        }
+
+        // Função de hash MD5 (para fins de exemplo, em uma aplicação real, você usaria uma implementação mais robusta)
+        function md5(str) {
+            return str; // Implementação simplificada, não recomendada para uso em produção
+        }
+    </script>
+</body>
+</html>
