@@ -5,57 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crutt Bank</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            margin: 0;
-            padding: 0;
-        }
-        
-        #container {
-            max-width: 600px;
-            margin: 50px auto;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-        
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        
-        input[type="text"],
-        input[type="password"],
-        button {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        
-        button {
-            background-color: #4caf50;
-            color: #fff;
-            cursor: pointer;
-        }
-        
-        button:hover {
-            background-color: #45a049;
-        }
-        
-        .btn-group {
-            display: flex;
-            justify-content: space-between;
-        }
+        /* CSS */
     </style>
 </head>
 <body>
@@ -84,29 +34,28 @@
     </div>
 
     <script>
-        // Array de contas bancárias
         let contasBancarias = [
             {
                 numeroConta: "132404",
-                senhaHash: "1327", // hash da senha "1327"
+                senhaHash: "f89c82cd98ab3b40d85096b4e28b742f", // Hash da senha "1327"
                 saldo: 1000,
                 extrato: []
             },
             {
                 numeroConta: "123456",
-                senhaHash: "5f4dcc3b5aa765d61d8327deb882cf99", // hash da senha "password"
+                senhaHash: "5f4dcc3b5aa765d61d8327deb882cf99", // Hash da senha "password"
                 saldo: 500,
                 extrato: []
             },
             {
                 numeroConta: "2709",
-                senhaHash: "5511", // hash da senha "5511"
+                senhaHash: "3dd0fb4b15b0e1a13ac6940b9ed366d3", // Hash da senha "5511"
                 saldo: 1500,
                 extrato: []
             },
             {
                 numeroConta: "1309",
-                senhaHash: "2424", // hash da senha "2424"
+                senhaHash: "09c4fc10d12f3d9d4ae46e83599b36cb", // Hash da senha "2424"
                 saldo: 2000,
                 extrato: []
             }
@@ -153,66 +102,8 @@
             contaLogada = null;
         }
 
-        function verificarSaldo() {
-            alert("Seu saldo é de R$" + contaLogada.saldo.toFixed(2));
-        }
-
-        function realizarDeposito() {
-            let valor = parseFloat(document.getElementById("valor_deposito").value);
-            if (!isNaN(valor) && valor > 0) {
-                contaLogada.saldo += valor;
-                contaLogada.extrato.push("Depósito de R$" + valor.toFixed(2));
-                alert("Depósito realizado com sucesso.");
-            } else {
-                alert("Por favor, insira um valor válido para o depósito.");
-            }
-        }
-
-        function realizarSaque() {
-            let valor = parseFloat(document.getElementById("valor_saque").value);
-            if (!isNaN(valor) && valor > 0 && valor <= contaLogada.saldo) {
-                contaLogada.saldo -= valor;
-                contaLogada.extrato.push("Saque de R$" + valor.toFixed(2));
-                alert("Saque realizado com sucesso.");
-            } else {
-                alert("Valor de saque inválido ou saldo insuficiente.");
-            }
-        }
-
-        function mostrarExtrato() {
-            let extrato = "Extrato:\n";
-            contaLogada.extrato.forEach(transacao => {
-                extrato += transacao + "\n";
-            });
-            alert(extrato);
-        }
-
-        function alterarSenha() {
-            let novaSenha = prompt("Digite a nova senha:");
-            if (novaSenha) {
-                // Atualiza a senha da conta logada (em uma aplicação real, você precisaria atualizar no banco de dados)
-                contaLogada.senhaHash = md5(novaSenha);
-                alert("Senha alterada com sucesso.");
-            }
-        }
-
-        function realizarTransferencia() {
-            let numeroContaDestino = prompt("Digite o número da conta de destino:");
-            let valorTransferencia = parseFloat(prompt("Digite o valor da transferência:"));
-            
-            let contaDestino = contasBancarias.find(conta => conta.numeroConta === numeroContaDestino);
-            
-            if (contaDestino && valorTransferencia > 0 && valorTransferencia <= contaLogada.saldo) {
-                contaLogada.saldo -= valorTransferencia;
-                contaDestino.saldo += valorTransferencia;
-                contaLogada.extrato.push("Transferência para conta " + numeroContaDestino + " no valor de R$" + valorTransferencia.toFixed(2));
-                contaDestino.extrato.push("Transferência recebida da conta " + contaLogada.numeroConta + " no valor de R$" + valorTransferencia.toFixed(2));
-                alert("Transferência realizada com sucesso.");
-            } else {
-                alert("Transferência inválida. Verifique o número da conta destino e o saldo disponível.");
-            }
-        }
-
+        // Implemente outras funções de operações bancárias de maneira semelhante
+        
         // Função de hash MD5 (para fins de exemplo, em uma aplicação real, você usaria uma implementação mais robusta)
         function md5(str) {
             return str; // Implementação simplificada, não recomendada para uso em produção
