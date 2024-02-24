@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
         }
@@ -28,8 +28,8 @@
         
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #555;
+            margin-bottom: 10px;
+            color: #666;
         }
         
         input[type="text"],
@@ -47,6 +47,7 @@
             background-color: #4caf50;
             color: #fff;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
         
         button:hover {
@@ -60,6 +61,26 @@
         
         #operacoes button:last-child {
             margin-right: 0;
+        }
+
+        .btn-secondary {
+            background-color: #555;
+        }
+
+        .btn-secondary:hover {
+            background-color: #333;
+        }
+
+        .btn-danger {
+            background-color: #d9534f;
+        }
+
+        .btn-danger:hover {
+            background-color: #c9302c;
+        }
+
+        .btn-block {
+            display: block;
         }
     </style>
 </head>
@@ -86,8 +107,8 @@
             <button onclick="realizarSaque()">Saque</button><br>
             <button onclick="mostrarExtrato()">Extrato</button>
             <button onclick="alterarSenha()">Alterar Senha</button><br>
-            <button onclick="solicitarCredito()">Solicitar Crédito Pessoal</button><br>
-            <button onclick="logout()">Logout</button>
+            <button onclick="solicitarCredito()" class="btn-secondary btn-block">Solicitar Crédito Pessoal</button><br>
+            <button onclick="logout()" class="btn-danger btn-block">Logout</button>
         </div>
     </div>
 
