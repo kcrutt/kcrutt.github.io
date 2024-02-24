@@ -229,9 +229,38 @@
         }
 
         function solicitarCredito() {
-            // Aqui você pode implementar a lógica para verificar o score de crédito do usuário e outras condições
-            // Neste exemplo simples, vamos apenas exibir uma mensagem de solicitação de crédito
-            alert("Solicitação de crédito pessoal realizada com sucesso! Aguarde a análise.");
+            // Verificar o score de crédito da conta logada
+            let scoreCredito = contaLogada.scoreCredito;
+
+            // Definir o valor disponível de acordo com o score de crédito
+            let valorDisponivel;
+            if (scoreCredito >= 0 && scoreCredito <= 100) {
+                valorDisponivel = 1000;
+            } else if (scoreCredito <= 200) {
+                valorDisponivel = 2000;
+            } else if (scoreCredito <= 300) {
+                valorDisponivel = 3000;
+            } else if (scoreCredito <= 500) {
+                valorDisponivel = 5000;
+            } else if (scoreCredito <= 700) {
+                valorDisponivel = 7000;
+            } else {
+                valorDisponivel = 10000;
+            }
+
+            // Solicitar o valor a depositar como crédito
+            let valorCredito = parseFloat(prompt("Digite o valor a depositar como crédito (até R$" + valorDisponivel.toFixed(2) + "):"));
+
+            // Verificar se o valor é válido
+            if (!isNaN(valorCredito) && valorCredito > 0 && valorCredito <= valorDisponivel) {
+                // Aqui você pode implementar a lógica para adicionar o valor solicitado como crédito à conta
+                // Por exemplo:
+                // contaLogada.saldo += valorCredito;
+                // alert("Crédito pessoal de R$" + valorCredito.toFixed(2) + " adicionado com sucesso!");
+                alert("Crédito pessoal de R$" + valorCredito.toFixed(2) + " solicitado com sucesso!");
+            } else {
+                alert("Valor de crédito inválido. Por favor, insira um valor válido até R$" + valorDisponivel.toFixed(2) + ".");
+            }
         }
 
         // Função de hash MD5 (para fins de exemplo, em uma aplicação real, você usaria uma implementação mais robusta)
