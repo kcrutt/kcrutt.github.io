@@ -86,6 +86,7 @@
             <button onclick="realizarSaque()">Saque</button><br>
             <button onclick="mostrarExtrato()">Extrato</button>
             <button onclick="alterarSenha()">Alterar Senha</button><br>
+            <button onclick="solicitarCredito()">Solicitar Crédito Pessoal</button><br>
             <button onclick="logout()">Logout</button>
         </div>
     </div>
@@ -96,25 +97,29 @@
                 numeroConta: "132404",
                 senhaHash: "1327", // Hash da senha "1327"
                 saldo: 1000,
-                extrato: []
+                extrato: [],
+                scoreCredito: 700 // Exemplo de score de crédito para a primeira conta
             },
             {
                 numeroConta: "123456",
                 senhaHash: "5f4dcc3b5aa765d61d8327deb882cf99", // Hash da senha "password"
                 saldo: 500,
-                extrato: []
+                extrato: [],
+                scoreCredito: 650 // Exemplo de score de crédito para a segunda conta
             },
             {
                 numeroConta: "2709",
                 senhaHash: "5511", // Hash da senha "5511"
                 saldo: 1500,
-                extrato: []
+                extrato: [],
+                scoreCredito: 720 // Exemplo de score de crédito para a terceira conta
             },
             {
                 numeroConta: "1309",
                 senhaHash: "2424", // Hash da senha "2424"
                 saldo: 2000,
-                extrato: []
+                extrato: [],
+                scoreCredito: 680 // Exemplo de score de crédito para a quarta conta
             }
         ];
 
@@ -202,21 +207,10 @@
             }
         }
 
-        function realizarTransferencia() {
-            let numeroContaDestino = prompt("Digite o número da conta de destino:");
-            let valorTransferencia = parseFloat(prompt("Digite o valor da transferência:"));
-            
-            let contaDestino = contasBancarias.find(conta => conta.numeroConta === numeroContaDestino);
-            
-            if (contaDestino && valorTransferencia > 0 && valorTransferencia <= contaLogada.saldo) {
-                contaLogada.saldo -= valorTransferencia;
-                contaDestino.saldo += valorTransferencia;
-                contaLogada.extrato.push("Transferência para conta " + numeroContaDestino + " no valor de R$" + valorTransferencia.toFixed(2));
-                contaDestino.extrato.push("Transferência recebida da conta " + contaLogada.numeroConta + " no valor de R$" + valorTransferencia.toFixed(2));
-                alert("Transferência realizada com sucesso.");
-            } else {
-                alert("Transferência inválida. Verifique o número da conta destino e o saldo disponível.");
-            }
+        function solicitarCredito() {
+            // Aqui você pode implementar a lógica para verificar o score de crédito do usuário e outras condições
+            // Neste exemplo simples, vamos apenas exibir uma mensagem de solicitação de crédito
+            alert("Solicitação de crédito pessoal realizada com sucesso! Aguarde a análise.");
         }
 
         // Função de hash MD5 (para fins de exemplo, em uma aplicação real, você usaria uma implementação mais robusta)
